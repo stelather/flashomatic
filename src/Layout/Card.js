@@ -21,7 +21,6 @@ function Card({decks , deck, setDecks}) {
         }
       };
 
-    console.log(deck);
     return(
         < >
         <h4>{deck.name}</h4>
