@@ -31,7 +31,7 @@ function EditCard() {
     event.preventDefault();
     await updateCard({ ...formData, id: cardId, deckId });
     history.push(`/decks/${deckId}`);
-    console.log({ ...formData, id: cardId, deckId })
+    
   };
 
   return (
