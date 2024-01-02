@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import {
   readDeck,
-  listCards,
   createCard,
 } from '../utils/api/index';
 import CardForm
