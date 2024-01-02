@@ -18,9 +18,7 @@ function Layout() {
   
     const cardCounts = {};
     loadedDecks.forEach(async(deck, index) => {
-      console.log(deck);
       const cards = deck.cards;
-      console.log('deck',deck.id);
       if (cards) { // Check if cards is not undefined
         cardCounts[deck.id] = cards.length;
       } else {
