@@ -1,54 +1,76 @@
-import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
-import { createCard, readCard, updateCard } from '../utils/api/index';
-import Header from './Header';
-import CardForm from './CardForm';
+import React, { useState, useEffect } from "react"
+import { Link, useHistory, useParams } from "react-router-dom"
+import { readCard, readDeck, updateCard } from "../utils/api/index"
+import FormCard from "./FormCard"
 
 function EditCard() {
-  const { deckId, cardId } = useParams();
-  const history = useHistory();
-  const [formData, setFormData] = useState({ front: '', back: '' });
+    const history = useHistory()
+    const [card, setCard] = useState({})
+    const [deck, setDeck] = useState({})
+    const {deckId, cardId} = useParams()
 
-  useEffect(() => {
-    async function loadCard() {
-      const card = await readCard(cardId);
-      setFormData({
-        front: card.front,
-        back: card.back,
-      });
+    useEffect(() => {
+        async function loadDeck() {
+            const response = await readDeck(deckId)
+            setDeck(response)
+        }
+        loadDeck()
+    }, [deckId])
+
+    useEffect(() => {
+        async function loadCard() {
+            const response = await readCard(cardId)
+            setCard(response)
+        }
+        loadCard()
+    }, [cardId, setCard])
+
+    const cancelButtonHandler = () => {
+        history.push(`/decks/${deckId}`)
     }
-    loadCard();
-  }, []);
 
-  const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
-  };
+    const submitButtonHandler = async (event) => {
+        event.preventDefault()
+        await updateCard({...card})
+        history.push(`/decks/${deckId}`)
+    }
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    await updateCard({ ...formData, id: cardId, deckId });
-    history.push(`/decks/${deckId}`);
-    
-  };
+    const inputChangeHandler = (event) => {
+        setCard({
+            ...card,
+            [event.target.name]: event.target.value
+        })
+    }
 
-  return (
-    <div>
-      <Header />
-      <h2>Edit Card</h2>
-{/* Use the CardForm component here */}
-      <CardForm
-      formData={formData}
-      onChange={handleChange}
-      onSubmit={handleSubmit}
-      onCancel={() => history.push(`/decks/${deckId}`)}
-      submitLabel="Submit"  // Customize button labels
-      cancelLabel="Cancel"
-    />
-    </div>
-  );
+    return (
+        <div>
+            <nav className="aria-lable breadcrumb">
+                <ol className="breadcrumb">
+                    <li className="breadcrumb-item">
+                        <Link to="/">
+                            Home
+                        </Link>
+                    </li>
+                    <li className="breadcrumb-item">
+                        <Link to={`/decks/${deck.id}`}>
+                            {deck.name}
+                        </Link>
+                    </li>
+                    <li className="breadcrumb-item">
+                        Edit Card {cardId}
+                    </li>
+                </ol>
+            </nav>
+            <h2>Edit Card</h2>
+            <FormCard
+                inputChangeHandler={inputChangeHandler}
+                submitFormHandler={submitButtonHandler}
+                cancelButtonHandler={cancelButtonHandler}
+                card={card}
+                type="edit"
+            />
+        </div>
+    )
 }
 
-export default EditCard;
+export default EditCard
