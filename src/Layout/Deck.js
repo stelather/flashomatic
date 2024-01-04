@@ -48,6 +48,18 @@ function Deck() {
     setIsEditingCard(true);
   }
 
+  async function deleteCardHandler(cardId){
+    if (
+        window.confirm(
+            "Delete this card? You will not be able to recover it."
+        )
+    ) {
+      deleteCard(cardId)
+          .then(history.go(0))
+    }
+  }
+
+
   async function handleDeleteCard(cardId) {
     if (window.confirm('Are you sure you want to delete this card?')) {
       await deleteCard(cardId);
@@ -96,7 +108,7 @@ function Deck() {
               <Link to={`/decks/${deckId}/cards/${card.id}/edit`}>
                 <button onClick ={handleEditCard}>Edit</button>
               </Link>
-              <button onClick={() => handleDeleteCard(card.id)}>Delete</button>
+              <button onClick={() => deleteCardHandler(card.id)}>Delete</button>
             </div>
           ))}
         </div>
