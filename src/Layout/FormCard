@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react"
 
-function FormForCard({type, inputChangeHandler, submitFormHandler, cancelButtonHandler, card}) {
+function FormCard({type, inputChangeHandler, submitFormHandler, cancelButtonHandler, card}) {
     return (
         <form onSubmit={submitFormHandler}>
             <div>
@@ -43,4 +43,4 @@ function FormForCard({type, inputChangeHandler, submitFormHandler, cancelButtonH
         </form>
     )
 }
-export default FormForCard
+export default FormCard
